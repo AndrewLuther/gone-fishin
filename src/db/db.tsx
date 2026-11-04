@@ -188,7 +188,7 @@ function formatTimeFromMs(totalMs: number): string {
 // MAIN API FUNCTIONS // -------------------------------------------------------------
 const fishinWaitTime = 7200000;
 const voucherWaitTime = 86400000;
-//const fishinWaitTime = 1;
+// const fishinWaitTime = 1;
 // const voucherWaitTime = 1;
 
 type VoucherReceiveResponse = { message: string };
@@ -213,7 +213,8 @@ export async function voucherReceiveCommand(
       .where(eq(userTable.discordSnowflake, user.discordSnowflake))
       .returning();
 
-    voucherReceiveResponse.message = `You now have ${userResult[0]!.packVouchers} pack voucher${userResult[0]!.packVouchers == 1 ? "" : "s"}!`;
+    await giveVouchers(user, 1);
+    voucherReceiveResponse.message = `You now have ${userResult[0]!.packVouchers + 1} pack voucher${userResult[0]!.packVouchers == 1 ? "" : "s"}!`;
   }
 
   return voucherReceiveResponse;
@@ -245,7 +246,7 @@ export async function goFishinCommand(
     const availibleSets = await db
       .select()
       .from(setTable)
-      .where(gte(setTable.packsRemaining, 0));
+      .where(gte(setTable.packs_remaining, 0));
 
     if (random < 1) {
       // very rare event 1%

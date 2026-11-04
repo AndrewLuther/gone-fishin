@@ -3,10 +3,6 @@ import { db } from "./db/db";
 import { cardtypeTable, cardrarityTable, setTable } from "./db/schema";
 
 async function main() {
-  // delete all cardTypes so they can be recreated
-  await db.delete(cardtypeTable);
-  await db.delete(cardrarityTable);
-
   await db.insert(cardrarityTable).values([
     {
       id: 0,
@@ -99,13 +95,13 @@ async function main() {
   await db.insert(setTable).values([
     {
       name: "Aquatic Beginnings",
-      imagePath: "images/guppy.png",
-      packsRemaining: 100,
+      image_path: "images/guppy.png",
+      packs_remaining: 100,
     },
     {
       name: "Rock Paper Scissors",
-      imagePath: "images/rock.png",
-      packsRemaining: 100,
+      image_path: "images/rock.png",
+      packs_remaining: 100,
     },
   ]);
 }

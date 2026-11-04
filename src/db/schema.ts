@@ -10,10 +10,39 @@ export const userTable = sqliteTable("user", {
   lastFishin: int().notNull(),
 });
 
+export const setTable = sqliteTable("set", {
+  id: int().primaryKey({ autoIncrement: true }),
+  name: text().notNull(),
+  image_path: text().notNull(),
+  packs_remaining: int().notNull(),
+});
+
+export const cardrarityTable = sqliteTable("cardrarity", {
+  id: int().primaryKey(),
+  value: int().notNull(),
+});
+
+export const cardtypeTable = sqliteTable("cardtype", {
+  id: int().primaryKey({ autoIncrement: true }),
+  set_id: int()
+    .notNull()
+    .references(() => setTable.id),
+  name: text().notNull(),
+  image_path: text().notNull(),
+  rarity_id: int()
+    .notNull()
+    .references(() => cardrarityTable.id),
+  illustrator: text().notNull(),
+});
+
 export const packTable = sqliteTable("pack", {
   id: int().primaryKey({ autoIncrement: true }),
-  user_id: int().notNull(),
-  set_id: int().notNull(),
+  user_id: int()
+    .notNull()
+    .references(() => userTable.id),
+  set_id: int()
+    .notNull()
+    .references(() => setTable.id),
 });
 
 export const packRelations = relations(packTable, ({ one }) => ({
@@ -25,27 +54,10 @@ export const packRelations = relations(packTable, ({ one }) => ({
 
 export const cardTable = sqliteTable("card", {
   id: int().primaryKey({ autoIncrement: true }),
-  user_id: int().notNull(),
-  cardtype_id: int().notNull(),
-});
-
-export const cardtypeTable = sqliteTable("cardtype", {
-  id: int().primaryKey({ autoIncrement: true }),
-  set_id: int().notNull(),
-  name: text().notNull(),
-  image_path: text().notNull(),
-  rarity_id: int().notNull(),
-  illustrator: text().notNull(),
-});
-
-export const setTable = sqliteTable("set", {
-  id: int().primaryKey({ autoIncrement: true }),
-  name: text().notNull(),
-  imagePath: text().notNull(),
-  packsRemaining: int().notNull(),
-});
-
-export const cardrarityTable = sqliteTable("cardrarity", {
-  id: int().primaryKey(),
-  value: int().notNull(),
+  user_id: int()
+    .notNull()
+    .references(() => userTable.id),
+  cardtype_id: int()
+    .notNull()
+    .references(() => cardtypeTable.id),
 });
