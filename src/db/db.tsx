@@ -1,4 +1,5 @@
 import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
 
 import {
   cardrarityTable,
@@ -26,6 +27,7 @@ import { Browser, Page } from "puppeteer";
 import { createCardPNG, createCollectionPNG } from "../card-display";
 
 export const db = drizzle(process.env.DB_FILE_NAME!);
+await migrate(db, { migrationsFolder: "./drizzle" });
 
 export async function getUserCount() {
   return await db.$count(userTable);

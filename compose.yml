@@ -1,0 +1,11 @@
+services:
+  
+  gone_fishin:
+    image: ghcr.io/andrewluther/gone-fishin:main
+    build: .
+    env_file:
+      - ./.env
+    volumes:
+      - ./data:/app/data
+    environment:
+      - DB_FILE_NAME=file:/app/data/cardgame.db
